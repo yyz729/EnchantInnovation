@@ -13,8 +13,16 @@ public class EnchantmentUtils {
     }
     public static void addExp(ItemStack stack , int value){
 
-        int currentLevel = stack.getOrDefault(EnchantInnovationPlatform.getExp(),0);
-        stack.set(EnchantInnovationPlatform.getExp(), currentLevel + value);
+        int currentExp = stack.getOrDefault(EnchantInnovationPlatform.getExp(),0);
+        int newExp = currentExp + value;
+        stack.set(EnchantInnovationPlatform.getExp(), newExp);
+
+        int[] info = calculateLevelAndProgress(newExp);
+        int level = info[0];
+        int progress = info[1];
+
+        stack.set(EnchantInnovationPlatform.getLevel(), level);
+        stack.set(EnchantInnovationPlatform.getXpNext(), getExpRequiredForNextLevel(level) - progress);
     }
 
     // 获取升级到下一级所需的经验值

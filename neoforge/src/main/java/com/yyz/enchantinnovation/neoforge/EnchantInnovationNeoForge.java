@@ -18,6 +18,18 @@ public final class EnchantInnovationNeoForge {
             builder -> builder
                     .persistent(Codec.INT)
     );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> LEVEL_COMPONENT_TYPE = DATA_COMPONENT.registerComponentType(
+            "level",
+            builder -> builder
+                    .persistent(Codec.INT)
+    );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> XP_NEXT_COMPONENT_TYPE = DATA_COMPONENT.registerComponentType(
+            "xp_next",
+            builder -> builder
+                    .persistent(Codec.INT)
+    );
     public EnchantInnovationNeoForge(IEventBus modEventBus) {
 
         EnchantInnovation.init();

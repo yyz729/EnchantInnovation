@@ -1,5 +1,6 @@
 package com.yyz.enchantinnovation.mixin;
 
+import com.yyz.enchantinnovation.EnchantInnovationPlatform;
 import com.yyz.enchantinnovation.EnchantmentUtils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
@@ -31,7 +32,7 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
     )
     private int injected(LocalPlayer instance) {
         ItemStack itemStack = ((EnchantmentMenu)this.menu).getSlot(0).getItem();
-        return EnchantmentUtils.calculateLevelFromExp(itemStack);
+        return itemStack.getOrDefault(EnchantInnovationPlatform.getLevel(), EnchantmentUtils.calculateLevelFromExp(itemStack));
     }
 
     @Redirect(
@@ -44,6 +45,6 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
     )
     private int injectRender(LocalPlayer instance) {
         ItemStack itemStack = ((EnchantmentMenu)this.menu).getSlot(0).getItem();
-        return EnchantmentUtils.calculateLevelFromExp(itemStack);
+        return itemStack.getOrDefault(EnchantInnovationPlatform.getLevel(), EnchantmentUtils.calculateLevelFromExp(itemStack));
     }
 }

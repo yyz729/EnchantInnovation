@@ -11,5 +11,14 @@ public class EnchantInnovationPlatform {
         throw new AssertionError();
     }
 
+    @ExpectPlatform
+    public static DataComponentType<Integer> getLevel() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static DataComponentType<Integer> getXpNext() {
+        throw new AssertionError();
+    }
 
 }

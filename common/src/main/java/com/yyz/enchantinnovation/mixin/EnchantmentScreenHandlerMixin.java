@@ -1,6 +1,7 @@
 package com.yyz.enchantinnovation.mixin;
 
 
+import com.yyz.enchantinnovation.EnchantInnovationPlatform;
 import com.yyz.enchantinnovation.EnchantmentUtils;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +30,7 @@ public class EnchantmentScreenHandlerMixin {
     )
     private int injected(Player instance) {
         ItemStack itemStack = this.enchantSlots.getItem(0);
-        return EnchantmentUtils.calculateLevelFromExp(itemStack);
+        return itemStack.getOrDefault(EnchantInnovationPlatform.getLevel(), EnchantmentUtils.calculateLevelFromExp(itemStack));
     }
 
 

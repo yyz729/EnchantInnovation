@@ -36,9 +36,7 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
     )
     private int injected(Player instance) {
         ItemStack itemStack = this.inputSlots.getItem(0);
-        int level = EnchantmentUtils.calculateLevelFromExp(itemStack);
-
-        return level;
+        return itemStack.getOrDefault(EnchantInnovationPlatform.getLevel(), EnchantmentUtils.calculateLevelFromExp(itemStack));
     }
 
     @Redirect(method = "onTake", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/DataSlot;get()I"))
@@ -53,8 +51,7 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
 
         int currentExp = stack.getOrDefault(EnchantInnovationPlatform.getExp(),0);
 
-        // 使用工具类计算当前等级
-        int currentLevel = EnchantmentUtils.calculateLevelAndProgress(currentExp)[0];
+        int currentLevel = stack.getOrDefault(EnchantInnovationPlatform.getLevel(), EnchantmentUtils.calculateLevelAndProgress(currentExp)[0]);
 
         // 计算目标等级（不能低于0）
         int targetLevel = Math.max(currentLevel - this.cost.get(), 0);
@@ -66,6 +63,12 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
         // 执行扣除并确保不为负
         int newExp = Math.max(currentExp - expCost, 0);
         stack.set(EnchantInnovationPlatform.getExp(),newExp);
+
+        int[] info = EnchantmentUtils.calculateLevelAndProgress(newExp);
+        int newLevel = info[0];
+        int progress = info[1];
+        stack.set(EnchantInnovationPlatform.getLevel(), newLevel);
+        stack.set(EnchantInnovationPlatform.getXpNext(), EnchantmentUtils.getExpRequiredForNextLevel(newLevel) - progress);
         return stack;
     }
 }
