@@ -11,11 +11,27 @@ public class EnchantmentUtils {
         int[] levelInfo = EnchantmentUtils.calculateLevelAndProgress(exp);
         return levelInfo[0];
     }
-    public static void addExp(ItemStack stack , int value){
+    public static int addExp(ItemStack stack, int value) {
+        // Считаем предыдущий опыт
+        int currentExp = stack.getOrDefault(EnchantInnovationPlatform.getExp(), 0);
+        // Сколько опыта добавляем
+        int addedXp = value;
+        // Записываем новый опыт
+        int newExp = currentExp + addedXp;
+        stack.set(EnchantInnovationPlatform.getExp(), newExp);
 
-        int currentLevel = stack.getOrDefault(EnchantInnovationPlatform.getExp(),0);
-        stack.set(EnchantInnovationPlatform.getExp(), currentLevel + value);
+        // Пересчитываем уровень и прогресс
+        int[] info = calculateLevelAndProgress(newExp);
+        int level = info[0];
+        int progress = info[1];
+
+        stack.set(EnchantInnovationPlatform.getLevel(), level);
+        stack.set(EnchantInnovationPlatform.getXpNext(), getExpRequiredForNextLevel(level) - progress);
+
+        // Возвращаем фактически добавленное число XP
+        return addedXp;
     }
+
 
     // 获取升级到下一级所需的经验值
     public static int getExpRequiredForNextLevel(int currentLevel) {
