@@ -4,11 +4,9 @@
   "version": "${version}",
   "name": "EnchantInnovation",
   "description": "",
-  "authors": [
-    ""
-  ],
+  "authors": ["yyz729"],
   "contact": {
-    "homepage": ""
+    "homepage": "https://modrinth.com/mod/enchant-innovation"
   },
   "license": "MIT",
   "icon": "assets/enchantinnovation/icon.png",
