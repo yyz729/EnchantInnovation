@@ -27,6 +27,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "onEnchantmentPerformed", at = @At("HEAD"), cancellable = true)
     private void injectApplyEnchantmentCosts(ItemStack itemStack, int i, CallbackInfo ci) {
+        if(!itemStack.isDamageableItem()) return;
+
         ci.cancel();
         this.enchantmentSeed = this.random.nextInt();
 

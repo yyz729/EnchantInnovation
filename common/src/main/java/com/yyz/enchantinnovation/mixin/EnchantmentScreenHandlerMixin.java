@@ -29,7 +29,7 @@ public class EnchantmentScreenHandlerMixin {
     )
     private int injected(Player instance) {
         ItemStack itemStack = this.enchantSlots.getItem(0);
-        return EnchantmentUtils.calculateLevelFromExp(itemStack);
+        return itemStack.isDamageableItem()?EnchantmentUtils.calculateLevelFromExp(itemStack) : instance.experienceLevel;
     }
 
 
