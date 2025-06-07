@@ -1,5 +1,6 @@
 package com.yyz.enchantinnovation.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.yyz.enchantinnovation.EnchantmentUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,18 +38,20 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
         ItemStack itemStack = this.inputSlots.getItem(0);
         int level = EnchantmentUtils.calculateLevelFromExp(itemStack);
 
-        return level;
+        return itemStack.isDamageableItem() ? level : instance.experienceLevel;
     }
 
     @Redirect(method = "onTake", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/DataSlot;get()I"))
-    private int injectOnTakeOutput(DataSlot instance) {
-        return 0;
+    private int injectOnTakeOutput(DataSlot instance, @Local(argsOnly = true) ItemStack itemStack) {
+        return itemStack.isDamageableItem() ? 0 : instance.get();
     }
 
     @ModifyArg(method = "createResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ResultContainer;setItem(ILnet/minecraft/world/item/ItemStack;)V",ordinal = 4))
     private ItemStack injectUpdateResult(ItemStack itemStack) {
 
         ItemStack stack = itemStack.copy();
+
+
         CompoundTag nbt = stack.getOrCreateTag();
         int currentExp = nbt.getInt("exp");
 
@@ -65,6 +68,7 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
         // 执行扣除并确保不为负
         int newExp = Math.max(currentExp - expCost, 0);
         nbt.putInt("exp", newExp);
-        return stack;
+
+        return itemStack.isDamageableItem() ? stack:itemStack;
     }
 }

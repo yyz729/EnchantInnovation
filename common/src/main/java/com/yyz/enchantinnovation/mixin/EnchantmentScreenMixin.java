@@ -31,7 +31,7 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
     )
     private int injected(LocalPlayer instance) {
         ItemStack itemStack = ((EnchantmentMenu)this.menu).getSlot(0).getItem();
-        return EnchantmentUtils.calculateLevelFromExp(itemStack);
+        return itemStack.isDamageableItem() ? EnchantmentUtils.calculateLevelFromExp(itemStack):instance.experienceLevel;
     }
 
     @Redirect(
@@ -44,6 +44,6 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
     )
     private int injectRender(LocalPlayer instance) {
         ItemStack itemStack = ((EnchantmentMenu)this.menu).getSlot(0).getItem();
-        return EnchantmentUtils.calculateLevelFromExp(itemStack);
+        return itemStack.isDamageableItem()? EnchantmentUtils.calculateLevelFromExp(itemStack) : instance.experienceLevel;
     }
 }
